@@ -24,11 +24,6 @@ SIGNATURE_AGGREGATOR_PATH=$(
 relayer_path="$BASE_PATH/build/awm-relayer"
 signature_aggregator_path="$BASE_PATH/build/signature-aggregator"
 
-# these are duplicated here from signature-aggregator/config so they can be
-# used as arguments to the docker image build.
-export SIGNATURE_AGGREGATOR_API_PORT=8080
-export SIGNATURE_AGGREGATOR_METRICS_PORT=8081
-
 # Set the PATHS
 GOPATH="$(go env GOPATH)"
 
