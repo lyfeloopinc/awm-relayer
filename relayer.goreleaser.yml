@@ -28,34 +28,6 @@ builds:
     ignore:
       - goos: darwin
         goarch: amd64
-  - id: signature-aggregator
-    main: ./signature-aggregator/main/main.go
-    binary: signature-aggregator
-    flags:
-      - -v
-    # windows is ignored by default, as the `goos` field by default only
-    # contains linux and darwin
-    goos:
-      - linux
-      - darwin
-    goarch:
-      - amd64
-      - arm64
-    env:
-      - CGO_ENABLED=1
-      - CGO_CFLAGS=-O -D__BLST_PORTABLE__ # Set the CGO flags to use the portable version of BLST
-    overrides:
-      - goos: linux
-        goarch: arm64
-        env:
-          - CC=aarch64-linux-gnu-gcc
-      - goos: darwin
-        goarch: arm64
-        env:
-          - CC=oa64-clang
-    ignore:
-      - goos: darwin
-        goarch: amd64
 dockers:
   - image_templates:
     - 'avaplatform/awm-relayer:{{ .Tag }}-amd64'
@@ -72,21 +44,6 @@ dockers:
     - "--platform=linux/arm64"
     dockerfile: "relayer/Dockerfile"
     goarch: arm64
-  - image_templates:
-    - 'avaplatform/signature-aggregator:{{ .Tag }}-amd64'
-    use: buildx
-    build_flag_templates:
-    - "--pull"
-    - "--platform=linux/amd64"
-    dockerfile: "signature-aggregator/Dockerfile"
-  - image_templates:
-    - 'avaplatform/signature-aggregator:{{ .Tag }}-arm64'
-    use: buildx
-    build_flag_templates:
-    - "--pull"
-    - "--platform=linux/arm64"
-    dockerfile: "signature-aggregator/Dockerfile"
-    goarch: arm64
 docker_manifests:
   - name_template: 'avaplatform/awm-relayer:{{ .Tag }}'
     image_templates:
@@ -96,16 +53,6 @@ docker_manifests:
     image_templates:
     - 'avaplatform/awm-relayer:{{ .Tag }}-amd64'
     - 'avaplatform/awm-relayer:{{ .Tag }}-arm64'
-    # If tag is an rc, do not push the latest tag
-    skip_push: auto
-  - name_template: 'avaplatform/signature-aggregator:{{ .Tag }}'
-    image_templates:
-    - 'avaplatform/signature-aggregator:{{ .Tag }}-amd64'
-    - 'avaplatform/signature-aggregator:{{ .Tag }}-arm64'
-  - name_template: 'avaplatform/signature-aggregator:latest'
-    image_templates:
-    - 'avaplatform/signature-aggregator:{{ .Tag }}-amd64'
-    - 'avaplatform/signature-aggregator:{{ .Tag }}-arm64'
     # If tag is an rc, do not push the latest tag
     skip_push: auto
 release:

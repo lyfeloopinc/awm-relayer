@@ -1,12 +1,12 @@
 # Copyright (C) 2024, Ava Labs, Inc. All rights reserved.
 # See the file LICENSE for licensing terms.
 
-name: Release
+name: Release relayer
 
 on:
   push:
     tags:
-      - "*"
+      - "relayer/*"
 
 jobs:
   release:
@@ -68,7 +68,7 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --clean
+          args: release --clean --config relayer.goreleaser.yml
         env:
           # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
